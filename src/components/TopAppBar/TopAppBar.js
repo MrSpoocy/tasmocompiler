@@ -19,7 +19,7 @@ class TopAppBar extends Component {
       .then((ret) => {
         this.setState({ version: `v${ret.version}` });
       })
-      .catch((error) => {
+      .catch(() => {
         this.setState({ version: '' });
       });
   }
@@ -37,7 +37,9 @@ class TopAppBar extends Component {
   };
 
   render() {
-    const { classes, locale, changeLanguage, ...other } = this.props;
+    const {
+      classes, locale, changeLanguage, ...other
+    } = this.props;
     const { version, anchorEl } = this.state;
 
     return (
@@ -46,7 +48,9 @@ class TopAppBar extends Component {
         <AppBar {...other} position="static" color="primary">
           <Toolbar className={classes.toolbar}>
             <Typography variant="h6" color="inherit">
-              TasmoCompiler {version}
+              TasmoCompiler
+              {' '}
+              {version}
             </Typography>
             <div
               className={classes.language}
@@ -78,24 +82,22 @@ class TopAppBar extends Component {
             >
               {Object.keys(allMessages)
                 .sort()
-                .map((lang) => {
-                  return (
-                    <MenuItem
-                      onClick={() => this.handleClose(lang, locale)}
-                      key={lang}
-                      selected={locale === lang}
-                    >
-                      <img
-                        src={allMessages[lang].flag}
-                        alt=""
-                        className={classes.flagIcon}
-                      />
-                      <div className={classes.languageName}>
-                        {allMessages[lang].nativeName}
-                      </div>
-                    </MenuItem>
-                  );
-                })}
+                .map((lang) => (
+                  <MenuItem
+                    onClick={() => this.handleClose(lang, locale)}
+                    key={lang}
+                    selected={locale === lang}
+                  >
+                    <img
+                      src={allMessages[lang].flag}
+                      alt=""
+                      className={classes.flagIcon}
+                    />
+                    <div className={classes.languageName}>
+                      {allMessages[lang].nativeName}
+                    </div>
+                  </MenuItem>
+                ))}
             </Menu>
           </Toolbar>
         </AppBar>

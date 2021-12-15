@@ -14,12 +14,10 @@ import { allMessages } from '../../../locales/languages';
 const expectedVersion = '6.0.2';
 
 const server = setupServer(
-  rest.get('/api/v1/tcversion', (req, res, ctx) => {
-    return res(ctx.json({ ok: true, version: expectedVersion }));
-  })
+  rest.get('/api/v1/tcversion', (req, res, ctx) => res(ctx.json({ ok: true, version: expectedVersion }))),
 );
 
-let supportedLocales = [];
+const supportedLocales = [];
 for (const l in allMessages) {
   supportedLocales.push(...allMessages[l].browserLang);
 }
@@ -30,7 +28,7 @@ afterAll(() => server.close());
 
 it('should render TasmoCompiler version for language', async () => {
   const ret = render(
-    <TopAppBar classes={{}} locale={'pl'} changeLanguage={() => {}} />
+    <TopAppBar classes={{}} locale="pl" changeLanguage={() => {}} />,
   );
   const regex = new RegExp(`${expectedVersion}`);
   const titleElement = await screen.findByText(regex);

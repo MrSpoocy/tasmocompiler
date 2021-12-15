@@ -45,8 +45,11 @@ class App extends Component {
       showDownloadLinks: false,
       compileMessages: '',
       features: {},
+      // eslint-disable-next-line react/no-unused-state
       network: {},
+      // eslint-disable-next-line react/no-unused-state
       version: {},
+      // eslint-disable-next-line react/no-unused-state
       customParams: '',
       tcGUILanguage,
     };
@@ -129,21 +132,17 @@ class App extends Component {
           .catch((error) => {
             this.setState({ compileMessages: error.message, compiling: false });
           });
-      }
+      },
     );
   };
 
   changeLanguage = (lang) => {
-    tasmotaGUILanguages.sort((a, b) => {
-      return (allMessages[lang]['source'][a.name] || a.name).localeCompare(
-          (allMessages[lang]['source'][b.name] || b.name)
-      );
-    });
-    availableFeatures.sort((a, b) => {
-      return (allMessages[lang]['source'][a.description] || a.description).localeCompare(
-          (allMessages[lang]['source'][b.description] || b.description)
-      );
-    });
+    tasmotaGUILanguages.sort((a, b) => (allMessages[lang].source[a.name] || a.name).localeCompare(
+      (allMessages[lang].source[b.name] || b.name),
+    ));
+    availableFeatures.sort((a, b) => (allMessages[lang].source[a.description] || a.description).localeCompare(
+      (allMessages[lang].source[b.description] || b.description),
+    ));
     this.setState({ tcGUILanguage: lang });
   };
 
@@ -169,7 +168,7 @@ class App extends Component {
     return (
       <IntlProvider
         locale={tcGUILanguage}
-        messages={allMessages[tcGUILanguage]['source']}
+        messages={allMessages[tcGUILanguage].source}
       >
         <div className={classes.root}>
           <TopAppBar

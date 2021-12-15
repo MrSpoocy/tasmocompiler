@@ -6,15 +6,15 @@ import StepContent from '@material-ui/core/StepContent';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
+import { FormattedMessage } from 'react-intl';
 
-import NextButton from './NextButton';
-import BackButton from './BackButton';
-import TextFieldComponent from './TextFieldComponent';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { FormattedMessage } from 'react-intl';
+import TextFieldComponent from './TextFieldComponent';
+import BackButton from './BackButton';
+import NextButton from './NextButton';
 
 class WifiStep extends Component {
   constructor(props) {
@@ -52,8 +52,8 @@ class WifiStep extends Component {
     });
   }
 
-  handleClickShowPassword(event) {
-    this.setState({ showPassword: !this.state.showPassword });
+  handleClickShowPassword() {
+    this.setState((prev) => ({ showPassword: !prev.showPassword }));
   }
 
   handleMouseDownPassword(event) {
@@ -71,7 +71,9 @@ class WifiStep extends Component {
   }
 
   render() {
-    const { classes, backHandler, nextHandler, ...other } = this.props;
+    const {
+      classes, backHandler, nextHandler, ...other
+    } = this.props;
 
     const {
       STA_SSID1,
@@ -126,14 +128,14 @@ class WifiStep extends Component {
             </div>
             <div className={classes.checkboxContainer}>
               <FormControlLabel
-                control={
+                control={(
                   <Checkbox
                     checked={staticIPEnabled}
                     name="staticIPEnabled"
                     onChange={this.handleChangeCheckBox}
                     value="staticIPEnabled"
                   />
-                }
+                )}
                 label={<FormattedMessage id="stepWifiConfStaticIP" />}
               />
             </div>

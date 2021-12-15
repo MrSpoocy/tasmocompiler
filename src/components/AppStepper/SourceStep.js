@@ -77,7 +77,9 @@ class SourceStep extends Component {
   render() {
     const { classes, nextHandler, ...other } = this.props;
 
-    const { isRepo, message, cloning, gettingTags } = this.state;
+    const {
+      isRepo, message, cloning, gettingTags,
+    } = this.state;
 
     return (
       <Step {...other}>

@@ -189,17 +189,13 @@ const tasmotaGUILanguages = [
 // it is based on user browser language setting
 const browserLanguage = navigator.language.toLocaleLowerCase();
 
-let languageIndex = tasmotaGUILanguages.findIndex((element) =>
-  element.browserLang.includes(browserLanguage)
-);
+let language = tasmotaGUILanguages.find((element) => element.browserLang.includes(browserLanguage));
 
 // Set English as default
-if (languageIndex === -1) {
-  languageIndex = tasmotaGUILanguages.findIndex((element) =>
-    element.value.includes('en_GB')
-  );
+if (!language) {
+  language = tasmotaGUILanguages.find((element) => element.value.includes('en_GB'));
 }
 
-const preselectedTasmotaGUILanguage = tasmotaGUILanguages[languageIndex].value;
+const preselectedTasmotaGUILanguage = language.value;
 
 export { tasmotaGUILanguages, preselectedTasmotaGUILanguage };

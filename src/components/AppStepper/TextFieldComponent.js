@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 
-function TextFieldComponent(props) {
-  const { name, label, classes, value, type, onChange, inputProps } = props;
+const TextFieldComponent = (props) => {
+  const {
+    name, label, classes, value, type, onChange, inputProps,
+  } = props;
 
   return (
     <TextField
@@ -18,7 +20,7 @@ function TextFieldComponent(props) {
       InputProps={inputProps}
     />
   );
-}
+};
 
 TextFieldComponent.propTypes = {
   name: PropTypes.string.isRequired,

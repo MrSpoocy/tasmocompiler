@@ -5,7 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FormattedMessage } from 'react-intl';
 
-function FeaturesSelector(props) {
+const FeaturesSelector = (props) => {
   const {
     value,
     onChange,
@@ -30,7 +30,7 @@ function FeaturesSelector(props) {
       </Tooltip>
     </div>
   );
-}
+};
 
 FeaturesSelector.propTypes = {
   value: PropTypes.bool.isRequired,

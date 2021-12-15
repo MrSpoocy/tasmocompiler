@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { FormattedMessage } from 'react-intl';
 
-function CompileButton(props) {
+const CompileButton = (props) => {
   const { disabled, onClick } = props;
   return (
     <Button
@@ -15,7 +15,7 @@ function CompileButton(props) {
       <FormattedMessage id="btnCompile" />
     </Button>
   );
-}
+};
 
 CompileButton.propTypes = {
   disabled: PropTypes.bool.isRequired,

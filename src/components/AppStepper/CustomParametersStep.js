@@ -5,10 +5,10 @@ import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { FormattedMessage } from 'react-intl';
 
 import NextButton from './NextButton';
 import BackButton from './BackButton';
-import { FormattedMessage } from 'react-intl';
 
 class CustomParametersStep extends Component {
   constructor(props) {
@@ -52,11 +52,22 @@ class CustomParametersStep extends Component {
   }
 
   render() {
-    const { classes, nextHandler, backHandler, ...other } = this.props;
+    const {
+      classes,
+      nextHandler,
+      backHandler,
+      ...other
+    } = this.props;
     const { customParams } = this.state;
-    const placeholder =
-      '#ifdef USE_MCP230xx\n #undef USE_MCP230xx\n#endif\n#define USE_MCP230xx\n\n' +
-      '#ifdef USE_MCP230xx_ADDR\n #undef USE_MCP230xx_ADDR\n#endif\n#define USE_MCP230xx_ADDR 0x20\n';
+    const placeholder = `#ifdef USE_MCP230xx
+#undef USE_MCP230xx
+#endif
+#define USE_MCP230xx
+
+#ifdef USE_MCP230xx_ADDR
+ #undef USE_MCP230xx_ADDR
+#endif
+#define USE_MCP230xx_ADDR 0x20`;
 
     return (
       <Step {...other}>

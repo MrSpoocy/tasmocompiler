@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { FormattedMessage } from 'react-intl';
 
-function BackButton(props) {
+const BackButton = (props) => {
   const { disabled, onClick } = props;
   return (
     <Button
@@ -15,7 +15,7 @@ function BackButton(props) {
       <FormattedMessage id="btnBack" />
     </Button>
   );
-}
+};
 
 BackButton.propTypes = {
   disabled: PropTypes.bool.isRequired,

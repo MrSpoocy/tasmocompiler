@@ -10,75 +10,19 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Divider from '@material-ui/core/Divider';
+import { FormattedMessage } from 'react-intl';
 
 import availableFeatures from './AvailableFeatures';
 import { availableBoards, availableBoardChipTypes } from './AvailableBoards';
 import FeaturesSelector from './FeaturesSelector';
 import NextButton from '../NextButton';
 import BackButton from '../BackButton';
-import { FormattedMessage } from 'react-intl';
-
-const getFeaturesDefaultStates = (board) => {
-  let defaults = {};
-  let toIncludeExclude = {};
-  availableFeatures.forEach((feature) => {
-    if (
-      feature.boards.includes(board.name) ||
-      feature.boards.includes('all') ||
-      board.include_features.includes(feature.name)
-    ) {
-      const value = board.include_features.includes(feature.name)
-        ? true
-        : feature.value;
-      const defaultFeatureState = setFeature(feature.name, value);
-      defaults = { ...defaults, ...defaultFeatureState };
-      // defaults[feature.name] = value;
-      // const group = getFeatureGroup(feature.name);
-      // group.forEach((g) => {
-      //   defaults[g] = value;
-      // });
-
-      if (value) {
-        toIncludeExclude = {
-          ...toIncludeExclude,
-          ...setIncludeExcludeFeature(feature.name),
-        };
-      }
-    }
-  });
-  defaults = { ...defaults, ...toIncludeExclude };
-  return defaults;
-};
 
 const getFeatureGroup = (name) => {
   const filtered = availableFeatures.filter((e) => e.name === name && e.group);
 
   if (filtered.length > 0) {
     return filtered[0].group;
-  }
-
-  return [];
-};
-
-const getFeatureExclude = (name) => {
-  const filtered = availableFeatures.filter(
-    (e) => e.name === name && e.exclude
-  );
-
-  if (filtered.length > 0) {
-    return filtered[0].exclude;
-  }
-
-  return [];
-};
-
-const getFeatureInclude = (name) => {
-  const filtered = availableFeatures.filter(
-    (e) => e.name === name && e.include
-  );
-
-  if (filtered.length > 0) {
-    return filtered[0].include;
   }
 
   return [];
@@ -93,9 +37,33 @@ const getCustomParametersForFeature = (name) => {
   return '';
 };
 
+const getFeatureExclude = (name) => {
+  const filtered = availableFeatures.filter(
+    (e) => e.name === name && e.exclude,
+  );
+
+  if (filtered.length > 0) {
+    return filtered[0].exclude;
+  }
+
+  return [];
+};
+
+const getFeatureInclude = (name) => {
+  const filtered = availableFeatures.filter(
+    (e) => e.name === name && e.include,
+  );
+
+  if (filtered.length > 0) {
+    return filtered[0].include;
+  }
+
+  return [];
+};
+
 const getPlatformioEntriesForFeature = (name) => {
   const filtered = availableFeatures.filter(
-    (e) => e.name === name && e.platformio_entries
+    (e) => e.name === name && e.platformio_entries,
   );
   if (filtered.length > 0) {
     return filtered[0].platformio_entries;
@@ -145,6 +113,38 @@ const setIncludeExcludeFeature = (name) => {
   return newState;
 };
 
+const getFeaturesDefaultStates = (board) => {
+  let defaults = {};
+  let toIncludeExclude = {};
+  availableFeatures.forEach((feature) => {
+    if (
+      feature.boards.includes(board.name)
+        || feature.boards.includes('all')
+        || board.include_features.includes(feature.name)
+    ) {
+      const value = board.include_features.includes(feature.name)
+        ? true
+        : feature.value;
+      const defaultFeatureState = setFeature(feature.name, value);
+      defaults = { ...defaults, ...defaultFeatureState };
+      // defaults[feature.name] = value;
+      // const group = getFeatureGroup(feature.name);
+      // group.forEach((g) => {
+      //   defaults[g] = value;
+      // });
+
+      if (value) {
+        toIncludeExclude = {
+          ...toIncludeExclude,
+          ...setIncludeExcludeFeature(feature.name),
+        };
+      }
+    }
+  });
+  defaults = { ...defaults, ...toIncludeExclude };
+  return defaults;
+};
+
 class FeaturesStep extends Component {
   constructor(props) {
     super(props);
@@ -167,7 +167,7 @@ class FeaturesStep extends Component {
     }
 
     this.setState((state) => {
-      let newFeatures = { ...state.features, ...featureState };
+      const newFeatures = { ...state.features, ...featureState };
       // let newFeatures = Object.assign({}, state.features, featureState);
 
       // Object.keys(featureState).forEach((f) => {
@@ -194,8 +194,10 @@ class FeaturesStep extends Component {
   }
 
   render() {
-    const { board, ...tempState } = this.state.features;
-    const { classes, nextHandler, backHandler, ...other } = this.props;
+    const { features: { board, ...tempState } } = this.state;
+    const {
+      classes, nextHandler, backHandler, ...other
+    } = this.props;
     const Wire = ({ children, ...props }) => children(props);
     return (
       <Step {...other}>
@@ -209,26 +211,28 @@ class FeaturesStep extends Component {
 
           <div className={classes.actionsContainer}>
             <FormControl>
-              {availableBoardChipTypes.map((chipType, idx) => {
-                return (
-                  <div
-                    className={classes.chipTypesContainer}
-                    key={chipType.name}
+              {availableBoardChipTypes.map((chipType, idx) => (
+                <div
+                  className={classes.chipTypesContainer}
+                  key={chipType.name}
+                >
+                  <Typography>{chipType.name.toUpperCase()}</Typography>
+                  <RadioGroup
+                    row
+                    aria-label="board"
+                    name="board"
+                    value={board.name}
+                    onChange={this.handleRadioChange}
                   >
-                    <Typography>{chipType.name.toUpperCase()}</Typography>
-                    <RadioGroup
-                      row
-                      aria-label="board"
-                      name="board"
-                      value={board.name}
-                      onChange={this.handleRadioChange}
-                    >
-                      {availableBoards.map((item) => {
-                        const { name, description, tooltip, show, chip_type } =
-                          item;
-                        return (
-                          chip_type === chipType.name &&
-                          show && (
+                    {availableBoards.map((item) => {
+                      const {
+                        // eslint-disable-next-line camelcase
+                        name, description, tooltip, show, chip_type,
+                      } = item;
+                      return (
+                        // eslint-disable-next-line camelcase
+                        chip_type === chipType.name
+                          && show && (
                             // tooltips workaround
                             <Wire value={name} key={item.name}>
                               {(props) => (
@@ -252,16 +256,15 @@ class FeaturesStep extends Component {
                                 </Tooltip>
                               )}
                             </Wire>
-                          )
-                        );
-                      })}
-                    </RadioGroup>
-                    {idx < availableBoardChipTypes.length - 1 && (
-                      <Divider className={classes.boardsDivider} />
-                    )}
-                  </div>
-                );
-              })}
+                        )
+                      );
+                    })}
+                  </RadioGroup>
+                  {idx < availableBoardChipTypes.length - 1 && (
+                  <Divider className={classes.boardsDivider} />
+                  )}
+                </div>
+              ))}
             </FormControl>
           </div>
 
@@ -270,10 +273,9 @@ class FeaturesStep extends Component {
           </Typography>
           <div className={classes.actionsContainer}>
             {availableFeatures.map(
-              (item) =>
-                item.show &&
-                (item.boards.includes(board.name) ||
-                  item.boards.includes('all')) && (
+              (item) => item.show
+                && (item.boards.includes(board.name)
+                  || item.boards.includes('all')) && (
                   <FeaturesSelector
                     classes={classes}
                     // value={this.state[item.name]}
@@ -282,7 +284,7 @@ class FeaturesStep extends Component {
                     onChange={this.handleChangeCheckBox}
                     key={item.name}
                   />
-                )
+              ),
             )}
           </div>
           <div className={classes.actionsContainer}>

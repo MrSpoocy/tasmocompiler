@@ -6,7 +6,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { FormattedMessage } from 'react-intl';
 
-function VersionSelector(props) {
+const VersionSelector = (props) => {
   const {
     name,
     classes,
@@ -14,7 +14,7 @@ function VersionSelector(props) {
     value,
     onChange,
     items,
-    preselectedTasmotaGUILanguage,
+    preselectedTasmotaGUILanguage = '',
   } = props;
 
   const inProps = {
@@ -34,8 +34,8 @@ function VersionSelector(props) {
       <Select value={value} onChange={onChange} inputProps={inProps}>
         {items.map((item) => (
           <MenuItem key={item.name || item} value={item.value || item}>
-            {name !== 'MY_LANGUAGE' &&
-              (item === 'development' ? (
+            {name !== 'MY_LANGUAGE'
+              && (item === 'development' ? (
                 <FormattedMessage id="stepVersionDevelopment" />
               ) : (
                 item
@@ -46,10 +46,9 @@ function VersionSelector(props) {
                 <div className={classes.languageName}>
                   <FormattedMessage id={item.name}>
                     {(text) => {
-                      const suffix =
-                        preselectedTasmotaGUILanguage !== item.value
-                          ? ` / ${item.nativeName}`
-                          : '';
+                      const suffix = preselectedTasmotaGUILanguage !== item.value
+                        ? ` / ${item.nativeName}`
+                        : '';
                       return `${text}${suffix}`;
                     }}
                   </FormattedMessage>
@@ -61,7 +60,7 @@ function VersionSelector(props) {
       </Select>
     </FormControl>
   );
-}
+};
 
 VersionSelector.propTypes = {
   name: PropTypes.string.isRequired,
